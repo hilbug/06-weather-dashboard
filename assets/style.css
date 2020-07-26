@@ -1,0 +1,30 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p&display=swap');
+
+/* Set font for page */
+* {
+  font-family: 'M PLUS 1p', sans-serif;
+}
+
+  /* Jumbotron / Header CSS */
+header.jumbotron {
+    text-align: center;
+    background-color: lightblue;
+    color: black;
+    border-radius: 0;
+    border-bottom: 10px solid black;
+    padding: 32px 16px;
+    margin: 0px;
+  }
+
+  /* Aside CSS */
+  div.aside-col {
+      background-color: lightgrey;
+      height: auto;
+  }
+
+  #search-box {
+    height: 50px;
+    font-size: 20px;
+  }
+  
