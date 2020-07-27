@@ -37,9 +37,35 @@ div.aside-col {
     height: auto;
 }
 
-#search-box {
-height: 50px;
+#search-term {
+height: 55px;
 font-size: 20px;
+}
+
+/* UV Index Colors from https://www.epa.gov/sunsafety/uv-index-scale-0*/
+.green-uv {
+    /* >= 0 && < 3*/
+    background-color: green;
+}
+
+.yellow-uv {
+    /* >=3 && < 6 */
+    background-color: yellow;
+}
+
+.orange-uv {
+    /* >=6 && < 8 */
+    background-color: orange;
+}
+
+.red-uv {
+    /* >= 8 && < 11*/
+    background-color: red;
+}
+
+.purple-uv {
+    /* >= 11*/
+    background-color: purple;
 }
 
 /* Footer CSS */
