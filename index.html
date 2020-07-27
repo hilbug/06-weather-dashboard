@@ -35,16 +35,17 @@
                     <h3>Search for a city:</h3>
                     <!-- Search box and button-->
                     <div class="input-group mb-3">
-                        <input id="search-box" type="text" class="form-control" placeholder="Boston, Atlanta, etc."
+                        <input id="search-term" type="text" class="form-control" placeholder="e.g. Boston,MA or London,UK"
                             aria-label="Search city box" aria-describedby="button-search">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="button" id="button-search"><i
+                            <button class="btn btn-primary" type="submit" id="button-search"><i
                                     class="fas fa-search-location fa-2x"></i></button>
                         </div>
                     </div>
                     <!-- Div for previously searched cities - dynamically save/display from local storage -->
                     <div id="search-history">
                         <h3>Past searches</h3>
+                        <!-- Displayed as buttons -->
                     </div>
                 </aside>
             </div>
@@ -58,7 +59,7 @@
                         <!-- div for Main results -->
                         <div class="col-12 border-bottom border-left border-dark">
                             <!-- City and Date Header -->
-                            <h2 id="city-date">City (date)</h2>
+                            <h2 id="city-date">City (date)(weather icon)</h2>
                             <!-- Current Temp F/C? -->
                             <p id="temp">Temp</p>
                             <!-- Humidity -->
@@ -73,13 +74,25 @@
                     <div class="row">
                         <!-- div for 5 day forecast -->
                         <div class="col-12">
+                            <h2>5-Day Forecast</h2>
                             <!-- Need to figure out cards - do these go in their own column or side by side? -->
+                            <!-- Date -->
+                            <!-- Weather icon -->
+                            <!-- Temp  -->
+                            <!-- Humidity -->
+                            <div id="5-day-cast">
+
+                            </div>
                         </div>
                     </div>
                 </main>
             </div>
         </div>
     </div>
+    <footer class="footer text-center">
+        <!-- Add footer for the logo -->
+        <p class="mb-0 p-2">Powered by: <img src="./assets/images/openweather.jpg" alt="open weather logo"></p>
+    </footer>
 
 
     <!-- jQuery  -->
