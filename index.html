@@ -35,13 +35,15 @@
                     <h3>Search for a city:</h3>
                     <!-- Search box and button-->
                     <div class="input-group mb-3">
-                        <input id="search-term" type="text" class="form-control" placeholder="e.g. Boston,MA or London,UK"
+                        <input id="search-term" type="text" class="form-control" placeholder="e.g. Boston or London,UK"
                             aria-label="Search city box" aria-describedby="button-search">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" id="button-search"><i
                                     class="fas fa-search-location fa-2x"></i></button>
                         </div>
                     </div>
+                    <p><em>Enter a city name or city name,country code.</em></p>
+                    <hr>
                     <!-- Div for previously searched cities - dynamically save/display from local storage -->
                     <div id="search-history">
                         <h3>Past searches</h3>
@@ -59,15 +61,15 @@
                         <!-- div for Main results -->
                         <div class="col-12 border-bottom border-left border-dark">
                             <!-- City and Date Header -->
-                            <h2 id="city-date">City (date)(weather icon)</h2>
+                            <h2 id="city-date">City (date) <img id="weather-icon-current" src="" alt="">(weather icon)</h2>
                             <!-- Current Temp F/C? -->
-                            <p id="temp">Temp</p>
+                            <p id="city-temp">Temp</p>
                             <!-- Humidity -->
-                            <p id="humidity">Humidity</p>
+                            <p id="city-humidity">Humidity</p>
                             <!-- Wind Speed -->
-                            <p id="wind-speed">Wind Speed</p>
+                            <p id="city-wind-speed">Wind Speed</p>
                             <!-- UV Index (bg-color based on the value? put in a span?) -->
-                            <p id="uv-index">UV Index</p>
+                            <p id="city-uv-index">UV Index</p>
                         </div>
                     </div>
                     <!-- Row for 5- day forecast -->
