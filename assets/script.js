@@ -15,13 +15,6 @@ $(document).ready(function () {
     const cityWindSpeed = $("#city-wind-speed");
     const cityUVIndex = $("#city-uv-index");
     
-    // Variables for forecast cards
-    const cardDay = $(".card-day");
-    const cardDate = $(".card-date");
-    const cardIcon = $(".weather-icon-card");
-    const cardTemp = $(".card-temp");
-    const cardHumid = $(".card-humid");
-    
     // Moment Date
     const todaysDate = moment();
     
@@ -102,7 +95,7 @@ $(document).ready(function () {
 
         //Get 5-day forecast...https://openweathermap.org/api/one-call-api
         // Use currentLat, currentLong
-        let forecastQueryUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${currentLat}&lon=${currentLong}&exclude=current,minutely,hourly&appid=77672c68786de792de20e4e44617bd62`;
+        let forecastQueryUrl = `http://api.openweathermap.org/data/2.5/onecall?lat=${currentLat}&lon=${currentLong}&exclude=current,minutely,hourly&appid=77672c68786de792de20e4e44617bd62`;
         // AJAX for Current 5-day forecast cards
         $.ajax({
             url: forecastQueryUrl,
@@ -113,10 +106,14 @@ $(document).ready(function () {
                 
                 // Fill out card text
                 $(".card-day").each(function (day) {
-                    day++;
+                    day = day + 1;
+                    console.log(day);
+                    console.log($( this ));
+                    //console.log(response);
                     // Forecast date
                     let cardDateMoment = moment.unix(response.daily[day].dt).format("MM/DD/YYYY");
-                    console.log("Moment Card Date: " + cardDateMoment);
+                    console.log(typeof(cardDateMoment));
+                    //console.log("Moment Card Date: " + cardDateMoment);
                     // Weather Icons
                     let weatherCardIcon = response.daily[day].weather[0].icon;
                     let weatherCardIconURL = `http://openweathermap.org/img/wn/${weatherCardIcon}.png`;
@@ -125,10 +122,16 @@ $(document).ready(function () {
                     // Humidity
                     let cardHumidity = response.daily[day].humidity;
                     // Fill out cards
-                    cardDate.text(cardDateMoment);
-                    cardIcon.attr("src", weatherCardIconURL).attr("alt", "weather icon");
-                    cardTemp.text(`Temp: ${cardTempF.toFixed(2)} ℉`);
-                    cardHumid.text(`Humidity: ${cardHumidity}%`);
+                    console.log("children");
+                    console.log($(this)[0].children[0].children[0]);
+                    // Date
+                    $($(this)[0].children[0].children[0]).text(cardDateMoment);
+                    // Weather Icon
+                    $($(this)[0].children[0].children[1].children[0]).attr("src", weatherCardIconURL).attr("alt", "weather icon");
+                    // Temp
+                    $($(this)[0].children[0].children[2]).text(`Temp: ${cardTempF.toFixed(2)} ℉`);
+                    // Humidity
+                    $($(this)[0].children[0].children[3]).text(`Humidity: ${cardHumidity}%`);
                 });
             })
         //storeSearchTerms();
@@ -138,6 +141,9 @@ $(document).ready(function () {
         // Store city searched cities to local storage
         // We need to extract response.name from updateCurrentWeather into a variable.
         // How do we avoid duplicate values getting pushed?
+
+        // store in different elements get lengh of local storage and use that as a key 0: Boston 1: New York 2: New Orleans
+
         function storeSearchTerms() {
             if (searchTermList) {
                 searchTermList.push(searchCity);
@@ -170,6 +176,9 @@ $(document).ready(function () {
     });
 
     // Search History Button - Not working
+    // Use this - on click, find the value i'm clicking on
+    // Find value of what i'm clicking on jquery
+    // console.log event - build query url and use city name
     srchBtn.on("click", function (event) {
         event.preventDefault();
 
