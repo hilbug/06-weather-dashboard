@@ -4,16 +4,27 @@ $(document).ready(function () {
     let searchTerm = $("#search-term");
     let searchHistory = $("#search-history");
     const srchBtn = $(".button-srch");
-    // Variables for page elements
+    let searchHistoryTerm = srchBtn.text;
+    let searchCity = "";
+    
+    // Variables for current weather
     const cityHeader = $("#city-date");
     const cityIcon = $("#weather-icon-current");
     const cityTemp = $("#city-temp");
     const cityHumidity = $("#city-humidity");
     const cityWindSpeed = $("#city-wind-speed");
     const cityUVIndex = $("#city-uv-index");
-    const forecastCards = $("#5-day-cast");
+    
+    // Variables for forecast cards
+    const cardDay = $(".card-day");
+    const cardDate = $(".card-date");
+    const cardIcon = $(".weather-icon-card");
+    const cardTemp = $(".card-temp");
+    const cardHumid = $(".card-humid");
+    
     // Moment Date
     const todaysDate = moment();
+    
     // Store search terms
     searchTermList = [];
 
@@ -45,8 +56,10 @@ $(document).ready(function () {
         console.log(weatherIconURL);
         // Temp: Convert the temp to fahrenheit
         let tempF = (response.main.temp - 273.15) * 1.80 + 32;
+        // City Name
+        searchCity = response.name;
         // Update Current Weather Header
-        cityHeader.text(`${response.name} (${todaysDate.format("MM/DD/YYYY")}) `);
+        cityHeader.text(`${searchCity} (${todaysDate.format("MM/DD/YYYY")}) `);
         cityHeader.append(cityIcon.attr("src", weatherIconURL).attr("alt", "weather icon"));
         cityTemp.text(`Temperature: ${tempF.toFixed(2)} ℉`);
         cityHumidity.text(`Humidity: ${response.main.humidity}%`);
@@ -87,26 +100,63 @@ $(document).ready(function () {
                 cityUVIndex.append(uvSpan);
             });
 
-        //Get 5-day forecast...https://openweathermap.org/forecast16
+        //Get 5-day forecast...https://openweathermap.org/api/one-call-api
         // Use currentLat, currentLong
-        let resultsCount = 5;
-        let forecastQueryUrl = `http://api.openweathermap.org/data/2.5/forecast/daily?lat=${currentLat}&lon=${currentLong}&cnt=${resultsCount}&appid=77672c68786de792de20e4e44617bd62`;
-        // AJAX for Current UV Index
+        let forecastQueryUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${currentLat}&lon=${currentLong}&exclude=current,minutely,hourly&appid=77672c68786de792de20e4e44617bd62`;
+        // AJAX for Current 5-day forecast cards
         $.ajax({
             url: forecastQueryUrl,
             method: "GET"
         })
             .then(function (response) {
-                // For each response, create a card with:
-                // Date
-                // Weather Icon
-                // Temp in F
-                // Humidity
-                // Append the card to forecastCards
+                console.log("Forecast URL: " + forecastQueryUrl);
+                
+                // Fill out card text
+                $(".card-day").each(function (day) {
+                    day++;
+                    // Forecast date
+                    let cardDateMoment = moment.unix(response.daily[day].dt).format("MM/DD/YYYY");
+                    console.log("Moment Card Date: " + cardDateMoment);
+                    // Weather Icons
+                    let weatherCardIcon = response.daily[day].weather[0].icon;
+                    let weatherCardIconURL = `http://openweathermap.org/img/wn/${weatherCardIcon}.png`;
+                    // Temp: Convert the temp to fahrenheit
+                    let cardTempF = (response.daily[day].temp.day - 273.15) * 1.80 + 32;
+                    // Humidity
+                    let cardHumidity = response.daily[day].humidity;
+                    // Fill out cards
+                    cardDate.text(cardDateMoment);
+                    cardIcon.attr("src", weatherCardIconURL).attr("alt", "weather icon");
+                    cardTemp.text(`Temp: ${cardTempF.toFixed(2)} ℉`);
+                    cardHumid.text(`Humidity: ${cardHumidity}%`);
+                });
             })
+        //storeSearchTerms();
     };
 
-    // Display weather for searched city
+     // Local Storage stuff!
+        // Store city searched cities to local storage
+        // We need to extract response.name from updateCurrentWeather into a variable.
+        // How do we avoid duplicate values getting pushed?
+        function storeSearchTerms() {
+            if (searchTermList) {
+                searchTermList.push(searchCity);
+            }
+            localStorage.setItem("searchTerms", JSON.stringify(searchTermList));
+            console.log(searchTermList);
+        }
+        // Add searched cities as buttons to Past Searches
+        // Issue: upon reload page, the buttons go away. When new city searched, the local storage is wiped. Why? 
+        function displaySearchTerms() {
+            let storedSearchList = JSON.parse(localStorage.getItem("searchTerms"));
+            console.log(storedSearchList);
+            let searchHistoryBtn = $("<button>").text(response.name).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
+            searchHistory.append(searchHistoryBtn);
+        }
+        //displaySearchTerms();
+        //$( window ).on("load", displaySearchTerms());
+
+    // Search Box Display weather for searched city
     searchBtn.on("click", function (event) {
         event.preventDefault();
 
@@ -116,30 +166,21 @@ $(document).ready(function () {
             url: queryURL,
             method: "GET"
         })
-            .then(
-                updateCurrentWeather,
-                storeSearchTerms,
-                displaySearchTerms
-                );
+            .then(updateCurrentWeather);
     });
 
-    // Local Storage stuff!
-    // Store city searched cities to local storage
-    // We need to extract response.name from updateCurrentWeather into a variable.
-    // How do we avoid duplicate values getting pushed?
-    function storeSearchTerms() {
-        searchTermList.push(response.name);
-        localStorage.setItem("searchTerms", JSON.stringify(searchTermList));
-        console.log(searchTermList);
-    }
-    // Add searched cities as buttons to Past Searches
-    // Issue: upon reload page, the buttons go away. When new city searched, the local storage is wiped. Why? 
-    function displaySearchTerms() {
-        let storedSearchList = JSON.parse(localStorage.getItem("searchTerms"));
-        console.log(storedSearchList);
-        let searchHistoryBtn = $("<button>").text(response.name).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
-        searchHistory.append(searchHistoryBtn);
-    }
+    // Search History Button - Not working
+    srchBtn.on("click", function (event) {
+        event.preventDefault();
+
+        let queryURL = buildCurrentQueryURL();
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+            .then(updateCurrentWeather);
+    });
 });
 
 // srchBtn.on("click", load page based on search term city)
