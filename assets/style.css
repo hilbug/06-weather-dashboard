@@ -68,6 +68,10 @@ font-size: 20px;
     background-color: purple;
 }
 
+div.card {
+    background-color: lightblue;
+}
+
 /* Footer CSS */
 /* https://css-tricks.com/couple-takes-sticky-footer/ */
 
