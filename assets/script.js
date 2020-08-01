@@ -6,7 +6,7 @@ $(document).ready(function () {
     const srchBtn = $(".button-srch");
     let searchHistoryTerm = srchBtn.text;
     let searchCity = "";
-    
+
     // Variables for current weather
     const cityHeader = $("#city-date");
     const cityIcon = $("#weather-icon-current");
@@ -14,10 +14,10 @@ $(document).ready(function () {
     const cityHumidity = $("#city-humidity");
     const cityWindSpeed = $("#city-wind-speed");
     const cityUVIndex = $("#city-uv-index");
-    
+
     // Moment Date
     const todaysDate = moment();
-    
+
     // Store search terms
     searchTermList = [];
 
@@ -33,20 +33,14 @@ $(document).ready(function () {
             .val()
             .trim();
         // Generate URL
-        console.log("---------------\nURL: " + queryURL + "\n---------------");
-        console.log(queryURL + $.param(queryParams));
         return queryURL + $.param(queryParams);
     }
 
     // Function to build page content based on API response
     function updateCurrentWeather(response) {
-        console.log(response);
-        console.log(response.name);
         // Get weather icon
         let weatherIcon = response.weather[0].icon;
         let weatherIconURL = `http://openweathermap.org/img/wn/${weatherIcon}.png`;
-        console.log(response.weather[0].icon);
-        console.log(weatherIconURL);
         // Temp: Convert the temp to fahrenheit
         let tempF = (response.main.temp - 273.15) * 1.80 + 32;
         // City Name
@@ -102,18 +96,11 @@ $(document).ready(function () {
             method: "GET"
         })
             .then(function (response) {
-                console.log("Forecast URL: " + forecastQueryUrl);
-                
                 // Fill out card text
                 $(".card-day").each(function (day) {
                     day = day + 1;
-                    console.log(day);
-                    console.log($( this ));
-                    //console.log(response);
                     // Forecast date
                     let cardDateMoment = moment.unix(response.daily[day].dt).format("MM/DD/YYYY");
-                    console.log(typeof(cardDateMoment));
-                    //console.log("Moment Card Date: " + cardDateMoment);
                     // Weather Icons
                     let weatherCardIcon = response.daily[day].weather[0].icon;
                     let weatherCardIconURL = `http://openweathermap.org/img/wn/${weatherCardIcon}.png`;
@@ -121,9 +108,7 @@ $(document).ready(function () {
                     let cardTempF = (response.daily[day].temp.day - 273.15) * 1.80 + 32;
                     // Humidity
                     let cardHumidity = response.daily[day].humidity;
-                    // Fill out cards
-                    console.log("children");
-                    console.log($(this)[0].children[0].children[0]);
+                    // Fill out Forecast cards
                     // Date
                     $($(this)[0].children[0].children[0]).text(cardDateMoment);
                     // Weather Icon
@@ -134,37 +119,40 @@ $(document).ready(function () {
                     $($(this)[0].children[0].children[3]).text(`Humidity: ${cardHumidity}%`);
                 });
             })
-        //storeSearchTerms();
     };
 
-     // Local Storage stuff!
-        // Store city searched cities to local storage
-        // We need to extract response.name from updateCurrentWeather into a variable.
-        // How do we avoid duplicate values getting pushed?
+    // Local Storage stuff!
+    // Store city searched cities to local storage
+    // We need to extract response.name from updateCurrentWeather into a variable.
+    // How do we avoid duplicate values getting pushed?
 
-        // store in different elements get lengh of local storage and use that as a key 0: Boston 1: New York 2: New Orleans
+    // store in different elements get lengh of local storage and use that as a key 0: Boston 1: New York 2: New Orleans
 
-        function storeSearchTerms() {
-            if (searchTermList) {
-                searchTermList.push(searchCity);
-            }
-            localStorage.setItem("searchTerms", JSON.stringify(searchTermList));
-            console.log(searchTermList);
-        }
-        // Add searched cities as buttons to Past Searches
-        // Issue: upon reload page, the buttons go away. When new city searched, the local storage is wiped. Why? 
-        function displaySearchTerms() {
-            let storedSearchList = JSON.parse(localStorage.getItem("searchTerms"));
-            console.log(storedSearchList);
-            let searchHistoryBtn = $("<button>").text(response.name).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
+    function storeSearchTerms() {
+        localStorage.setItem("city"+localStorage.length, searchTerm
+            .val()
+            .trim());
+    }
+    // Add searched cities as buttons to Past Searches
+    // Issue: upon reload page, the buttons go away. When new city searched, the local storage is wiped. Why? 
+    function displaySearchTerms() {
+        for (let i=0; i < localStorage.length; i++) {
+            let storedSearchList = localStorage.getItem("city"+i);
+            let searchHistoryBtn = $("<button>").text(storedSearchList).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
             searchHistory.append(searchHistoryBtn);
         }
-        //displaySearchTerms();
-        //$( window ).on("load", displaySearchTerms());
+
+        // let storedSearchList = JSON.parse(localStorage.getItem("searchTerms"));
+        // console.log(storedSearchList);
+        // let searchHistoryBtn = $("<button>").text(response.name).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
+        // searchHistory.append(searchHistoryBtn);
+    }
 
     // Search Box Display weather for searched city
     searchBtn.on("click", function (event) {
         event.preventDefault();
+        storeSearchTerms();
+        displaySearchTerms();
 
         let queryURL = buildCurrentQueryURL();
 
@@ -174,22 +162,25 @@ $(document).ready(function () {
         })
             .then(updateCurrentWeather);
     });
+
+    displaySearchTerms();
+    // need to load last city and also need to have listener on created button
 
     // Search History Button - Not working
     // Use this - on click, find the value i'm clicking on
     // Find value of what i'm clicking on jquery
     // console.log event - build query url and use city name
-    srchBtn.on("click", function (event) {
-        event.preventDefault();
+    // srchBtn.on("click", function (event) {
+    //     event.preventDefault();
 
-        let queryURL = buildCurrentQueryURL();
+    //     let queryURL = buildCurrentQueryURL();
 
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-        })
-            .then(updateCurrentWeather);
-    });
+    //     $.ajax({
+    //         url: queryURL,
+    //         method: "GET"
+    //     })
+    //         .then(updateCurrentWeather);
+    // });
 });
 
 // srchBtn.on("click", load page based on search term city)
