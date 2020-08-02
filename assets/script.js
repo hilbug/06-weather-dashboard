@@ -135,9 +135,13 @@ $(document).ready(function () {
     }
     // Add searched cities as buttons to Past Searches
     // Issue: upon reload page, the buttons go away. When new city searched, the local storage is wiped. Why? 
+    let storedSearchList = "";
     function displaySearchTerms() {
+        // Empty the search results div to render only one button per city
+        searchHistory.empty();
+        // Create a button for each searched city
         for (let i=0; i < localStorage.length; i++) {
-            let storedSearchList = localStorage.getItem("city"+i);
+            storedSearchList = localStorage.getItem("city"+i);
             let searchHistoryBtn = $("<button>").text(storedSearchList).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
             searchHistory.append(searchHistoryBtn);
         }
@@ -163,7 +167,28 @@ $(document).ready(function () {
             .then(updateCurrentWeather);
     });
 
+    // Show past search buttons when the page loads
     displaySearchTerms();
+
+    // Crappy code below...
+    // Load last searched city or Boston
+    // $( window ).on("load", function() {
+    //     let queryURL = "";
+    //     if (localStorage.length > 0) {
+    //         queryURL = "http://api.openweathermap.org/data/2.5/weather?APPID=77672c68786de792de20e4e44617bd62&q=" + storedSearchList;
+    //     }
+    //     else if (localStorage.length === 0) {
+    //         queryURL = "http://api.openweathermap.org/data/2.5/weather?APPID=77672c68786de792de20e4e44617bd62&lat=42.36&lon=-71.06"
+    //     }
+
+
+    //     $.ajax({
+    //         url: queryURL,
+    //         method: "GET"
+    //     })
+    //         .then(
+    //             updateCurrentWeather());
+    // });
     // need to load last city and also need to have listener on created button
 
     // Search History Button - Not working
@@ -172,14 +197,15 @@ $(document).ready(function () {
     // console.log event - build query url and use city name
     // srchBtn.on("click", function (event) {
     //     event.preventDefault();
+    //     console.log(event);
 
-    //     let queryURL = buildCurrentQueryURL();
+        // let queryURL = buildCurrentQueryURL();
 
-    //     $.ajax({
-    //         url: queryURL,
-    //         method: "GET"
-    //     })
-    //         .then(updateCurrentWeather);
+        // $.ajax({
+        //     url: queryURL,
+        //     method: "GET"
+        // })
+        //     .then(updateCurrentWeather);
     // });
 });
 
