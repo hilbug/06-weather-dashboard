@@ -24,7 +24,7 @@ $(document).ready(function () {
     // Function to build current weather query URL
     function buildCurrentQueryURL() {
         // API URL - https://openweathermap.org/current#one
-        let queryURL = "http://api.openweathermap.org/data/2.5/weather?";
+        let queryURL = "https://api.openweathermap.org/data/2.5/weather?";
 
         // Build object for API call
         let queryParams = { "APPID": "77672c68786de792de20e4e44617bd62" };
@@ -40,7 +40,7 @@ $(document).ready(function () {
     function updateCurrentWeather(response) {
         // Get weather icon
         let weatherIcon = response.weather[0].icon;
-        let weatherIconURL = `http://openweathermap.org/img/wn/${weatherIcon}.png`;
+        let weatherIconURL = `https://openweathermap.org/img/wn/${weatherIcon}.png`;
         // Temp: Convert the temp to fahrenheit
         let tempF = (response.main.temp - 273.15) * 1.80 + 32;
         // City Name
@@ -55,7 +55,7 @@ $(document).ready(function () {
         // Get UV Index... https://openweathermap.org/api/uvi
         let currentLat = response.coord.lat;
         let currentLong = response.coord.lon;
-        let uvQueryURL = `http://api.openweathermap.org/data/2.5/uvi?appid=77672c68786de792de20e4e44617bd62&lat=${currentLat}&lon=${currentLong}`;
+        let uvQueryURL = `https://api.openweathermap.org/data/2.5/uvi?appid=77672c68786de792de20e4e44617bd62&lat=${currentLat}&lon=${currentLong}`;
         // AJAX for Current UV Index
         $.ajax({
             url: uvQueryURL,
@@ -89,7 +89,7 @@ $(document).ready(function () {
 
         //Get 5-day forecast...https://openweathermap.org/api/one-call-api
         // Use currentLat, currentLong
-        let forecastQueryUrl = `http://api.openweathermap.org/data/2.5/onecall?lat=${currentLat}&lon=${currentLong}&exclude=current,minutely,hourly&appid=77672c68786de792de20e4e44617bd62`;
+        let forecastQueryUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${currentLat}&lon=${currentLong}&exclude=current,minutely,hourly&appid=77672c68786de792de20e4e44617bd62`;
         // AJAX for Current 5-day forecast cards
         $.ajax({
             url: forecastQueryUrl,
@@ -103,7 +103,7 @@ $(document).ready(function () {
                     let cardDateMoment = moment.unix(response.daily[day].dt).format("MM/DD/YYYY");
                     // Weather Icons
                     let weatherCardIcon = response.daily[day].weather[0].icon;
-                    let weatherCardIconURL = `http://openweathermap.org/img/wn/${weatherCardIcon}.png`;
+                    let weatherCardIconURL = `https://openweathermap.org/img/wn/${weatherCardIcon}.png`;
                     // Temp: Convert the temp to fahrenheit
                     let cardTempF = (response.daily[day].temp.day - 273.15) * 1.80 + 32;
                     // Humidity
@@ -175,10 +175,10 @@ $(document).ready(function () {
     // $( window ).on("load", function() {
     //     let queryURL = "";
     //     if (localStorage.length > 0) {
-    //         queryURL = "http://api.openweathermap.org/data/2.5/weather?APPID=77672c68786de792de20e4e44617bd62&q=" + storedSearchList;
+    //         queryURL = "https://api.openweathermap.org/data/2.5/weather?APPID=77672c68786de792de20e4e44617bd62&q=" + storedSearchList;
     //     }
     //     else if (localStorage.length === 0) {
-    //         queryURL = "http://api.openweathermap.org/data/2.5/weather?APPID=77672c68786de792de20e4e44617bd62&lat=42.36&lon=-71.06"
+    //         queryURL = "https://api.openweathermap.org/data/2.5/weather?APPID=77672c68786de792de20e4e44617bd62&lat=42.36&lon=-71.06"
     //     }
 
 
