@@ -29,7 +29,7 @@
         <!-- Bootstrap row #1 -->
         <div class="row">
             <!-- Div for Aside search area -->
-            <div class="col-3 aside-col border-right border-dark">
+            <div class="col-md-3 aside-col border-right border-bottom border-dark">
                 <aside class="pr-4">
                     <!-- Search header -->
                     <h3>Search for a city:</h3>
@@ -45,8 +45,8 @@
                     <p><em>E.g. Boston or Boston,MA,US or London,UK</em></p>
                     <hr>
                     <!-- Div for previously searched cities - dynamically save/display from local storage -->
+                    <h3>Past searches</h3>
                     <div id="search-history">
-                        <h3>Past searches</h3>
                         <!-- Displayed as buttons -->
                     </div>
                 </aside>
@@ -54,7 +54,7 @@
 
             <!-- Main content for search results -->
 
-            <div class="col-9">
+            <div class="col-md-9">
                 <main> 
                     <!-- Row for Searched city results -->
                     <div class="row">
@@ -82,7 +82,7 @@
                                 <div class="card card-day">
                                   <div class="card-body p-2">
                                     <h5 class="card-title card-date">Date</h5>
-                                    <p class="card-text card-icon"><img class="weather-icon-card" src="" alt="">(weather icon)</p>
+                                    <p class="card-text card-icon"><img class="weather-icon-card" src="" alt=""></p>
                                     <p class="card-text card-temp">Temp</p>
                                     <p class="card-text card-humid">Humidity</p>
                                   </div>
