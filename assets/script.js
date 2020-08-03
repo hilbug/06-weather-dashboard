@@ -144,12 +144,16 @@ $(document).ready(function () {
             storedSearchList = localStorage.getItem("city"+i);
             let searchHistoryBtn = $("<button>").text(storedSearchList).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
             searchHistory.append(searchHistoryBtn);
+            console.log("stored search list");
+            console.log(storedSearchList);
+            if (i === localStorage.length - 1) {
+                $.ajax({
+                    url: `https://api.openweathermap.org/data/2.5/weather?appid=77672c68786de792de20e4e44617bd62&q=${storedSearchList}`,
+                    method: "GET"
+                })
+                    .then(updateCurrentWeather);
+            }
         }
-
-        // let storedSearchList = JSON.parse(localStorage.getItem("searchTerms"));
-        // console.log(storedSearchList);
-        // let searchHistoryBtn = $("<button>").text(response.name).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
-        // searchHistory.append(searchHistoryBtn);
     }
 
     // Search Box Display weather for searched city
@@ -169,6 +173,8 @@ $(document).ready(function () {
 
     // Show past search buttons when the page loads
     displaySearchTerms();
+
+
 
     // Crappy code below...
     // Load last searched city or Boston
