@@ -6,6 +6,7 @@ $(document).ready(function () {
     const srchBtn = $(".button-srch");
     let searchHistoryTerm = srchBtn.text;
     let searchCity = "";
+    const clearBtn = $("#clear-search");
 
     // Variables for current weather
     const cityHeader = $("#city-date");
@@ -18,7 +19,7 @@ $(document).ready(function () {
     // Moment Date
     const todaysDate = moment();
 
-    // Store search terms
+    // don't need? Store search terms
     searchTermList = [];
 
     // Function to build current weather query URL
@@ -129,7 +130,7 @@ $(document).ready(function () {
     // store in different elements get lengh of local storage and use that as a key 0: Boston 1: New York 2: New Orleans
 
     function storeSearchTerms() {
-        localStorage.setItem("city"+localStorage.length, searchTerm
+        localStorage.setItem("city" + localStorage.length, searchTerm
             .val()
             .trim());
     }
@@ -140,8 +141,8 @@ $(document).ready(function () {
         // Empty the search results div to render only one button per city
         searchHistory.empty();
         // Create a button for each searched city
-        for (let i=0; i < localStorage.length; i++) {
-            storedSearchList = localStorage.getItem("city"+i);
+        for (let i = 0; i < localStorage.length; i++) {
+            storedSearchList = localStorage.getItem("city" + i);
             let searchHistoryBtn = $("<button>").text(storedSearchList).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
             searchHistory.append(searchHistoryBtn);
             console.log("stored search list");
@@ -156,6 +157,7 @@ $(document).ready(function () {
         }
     }
 
+    //Event Listeners
     // Search Box Display weather for searched city
     searchBtn.on("click", function (event) {
         event.preventDefault();
@@ -173,6 +175,37 @@ $(document).ready(function () {
 
     // Show past search buttons when the page loads
     displaySearchTerms();
+
+    // Add event listener for the dynamically created buttons
+    $(document).on("click", ".button-srch", function () {
+        //not needed since there is no "submit" button - event.preventDefault();
+        let pastCity = $(this).text();
+
+        $.ajax({
+            url: `https://api.openweathermap.org/data/2.5/weather?appid=77672c68786de792de20e4e44617bd62&q=${pastCity}`,
+            method: "GET"
+        })
+            .then(updateCurrentWeather);
+    });
+
+    // Clear search results
+    clearBtn.on("click", function() {
+        localStorage.clear();
+        searchHistory.empty();
+        location.reload();
+    });
+
+    // Load default a city
+    $(window).on("load", function () {
+        if (localStorage.length === 0) {
+            $.ajax({
+                url: `https://api.openweathermap.org/data/2.5/weather?appid=77672c68786de792de20e4e44617bd62&q=Boston`,
+                method: "GET"
+            })
+                .then(updateCurrentWeather);
+        }
+    });
+});
 
 
 
@@ -213,7 +246,6 @@ $(document).ready(function () {
         // })
         //     .then(updateCurrentWeather);
     // });
-});
 
 // srchBtn.on("click", load page based on search term city)
 //searchBtn.on("click", storeSearchTerm());
