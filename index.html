@@ -38,14 +38,14 @@
                         <input id="search-term" type="text" class="form-control" placeholder="Enter city"
                             aria-label="Search city box" aria-describedby="button-search">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit" id="button-search"><i
+                            <button class="btn btn-primary" type="submit" id="button-search" aria-label="Submit Search button" title="Submit search"><i
                                     class="fas fa-search-location fa-2x"></i></button>
                         </div>
                     </div>
                     <p><em>E.g. Boston or Boston,MA,US or London,UK</em></p>
                     <hr>
                     <!-- Div for previously searched cities - dynamically save/display from local storage -->
-                    <h3>Past searches</h3>
+                    <h3>Past searches <button class="btn btn-primary" id="clear-search" title="Clear search results" aria-label="Clear search results button"><i class="fa fa-trash"></i></button></h3>
                     <div id="search-history">
                         <!-- Displayed as buttons -->
                     </div>
