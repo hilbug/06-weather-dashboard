@@ -33,6 +33,7 @@ THEN I am presented with the last searched city forecast
 
 ## Screenshots
 ![Screen Shot 2020-08-04 at 10 55 07 PM](https://user-images.githubusercontent.com/65197724/89366849-a71f0f80-d6a5-11ea-8de8-67556c39e35c.png)
+![Weather Dashboard Demo](https://user-images.githubusercontent.com/65197724/89367560-5e685600-d6a7-11ea-83bd-9bfebbdb1d5c.gif)
 
 ## Honorable Mentions
 - Moment.js cheatsheet: https://devhints.io/moment
