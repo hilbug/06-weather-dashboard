@@ -42,13 +42,14 @@ $(document).ready(function () {
         // Get weather icon
         let weatherIcon = response.weather[0].icon;
         let weatherIconURL = `https://openweathermap.org/img/wn/${weatherIcon}.png`;
+        let weatherIconDescription = response.weather[0].description;
         // Temp: Convert the temp to fahrenheit
         let tempF = (response.main.temp - 273.15) * 1.80 + 32;
         // City Name
         searchCity = response.name;
         // Update Current Weather Header
         cityHeader.text(`${searchCity} (${todaysDate.format("MM/DD/YYYY")}) `);
-        cityHeader.append(cityIcon.attr("src", weatherIconURL).attr("alt", "weather icon"));
+        cityHeader.append(cityIcon.attr("src", weatherIconURL).attr("alt", `${weatherIconDescription}`).attr("title",`${weatherIconDescription}`));
         cityTemp.text(`Temperature: ${tempF.toFixed(2)} ℉`);
         cityHumidity.text(`Humidity: ${response.main.humidity}%`);
         cityWindSpeed.text(`Wind Speed: ${response.wind.speed} MPH`);
@@ -105,6 +106,7 @@ $(document).ready(function () {
                     // Weather Icons
                     let weatherCardIcon = response.daily[day].weather[0].icon;
                     let weatherCardIconURL = `https://openweathermap.org/img/wn/${weatherCardIcon}.png`;
+                    let weatherCardIconDesc = response.daily[day].weather[0].description;
                     // Temp: Convert the temp to fahrenheit
                     let cardTempF = (response.daily[day].temp.day - 273.15) * 1.80 + 32;
                     // Humidity
@@ -113,7 +115,7 @@ $(document).ready(function () {
                     // Date
                     $($(this)[0].children[0].children[0]).text(cardDateMoment);
                     // Weather Icon
-                    $($(this)[0].children[0].children[1].children[0]).attr("src", weatherCardIconURL).attr("alt", "weather icon");
+                    $($(this)[0].children[0].children[1].children[0]).attr("src", weatherCardIconURL).attr("alt", `${weatherCardIconDesc}`).attr("title",`${weatherCardIconDesc}`);
                     // Temp
                     $($(this)[0].children[0].children[2]).text(`Temp: ${cardTempF.toFixed(2)} ℉`);
                     // Humidity
