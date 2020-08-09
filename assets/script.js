@@ -120,10 +120,9 @@ $(document).ready(function () {
     };
 
     // store search history to get lengh of local storage and use that as a key
-    function storeSearchTerms() {
-        localStorage.setItem("city" + localStorage.length, searchTerm
-            .val()
-            .trim());
+    function storeSearchTerms(searchedCity) {
+        // use an argument so that this can be resused in other button events
+        localStorage.setItem("city" + localStorage.length, searchedCity);
     }
 
     // Add searched cities as buttons to Past Searches
@@ -136,14 +135,6 @@ $(document).ready(function () {
             storedSearchList = localStorage.getItem("city" + i);
             let searchHistoryBtn = $("<button>").text(storedSearchList).addClass("btn btn-primary button-srch m-2").attr("type", "submit");
             searchHistory.append(searchHistoryBtn);
-
-            if (i === localStorage.length - 1) {
-                $.ajax({
-                    url: `https://api.openweathermap.org/data/2.5/weather?appid=77672c68786de792de20e4e44617bd62&q=${storedSearchList}`,
-                    method: "GET"
-                })
-                    .then(updateCurrentWeather);
-            }
         }
     }
 
@@ -151,7 +142,7 @@ $(document).ready(function () {
     // Search Box Display weather for searched city
     searchBtn.on("click", function (event) {
         event.preventDefault();
-        storeSearchTerms();
+        storeSearchTerms(searchTerm[0].value.trim());
         displaySearchTerms();
 
         let queryURL = buildCurrentQueryURL();
@@ -163,13 +154,12 @@ $(document).ready(function () {
             .then(updateCurrentWeather);
     });
 
-    // Show past search buttons when the page loads
-    displaySearchTerms();
-
     // Add event listener for the dynamically created buttons
     $(document).on("click", ".button-srch", function () {
         //not needed since there is no "submit" button - event.preventDefault();
         let pastCity = $(this).text();
+
+        storeSearchTerms(pastCity);
 
         $.ajax({
             url: `https://api.openweathermap.org/data/2.5/weather?appid=77672c68786de792de20e4e44617bd62&q=${pastCity}`,
@@ -185,14 +175,25 @@ $(document).ready(function () {
         location.reload();
     });
 
-    // Load default a city
+    
+    // Load default a city OR load the last item in local storage
     $(window).on("load", function () {
+        // Show past search buttons when the page loads
+        displaySearchTerms();
+        // Grab last searched city
+        let pastCity = localStorage.getItem("city" + (localStorage.length - 1));
+        // Query string for ajax
+        let qurl = "";
+        // Set qurl
         if (localStorage.length === 0) {
-            $.ajax({
-                url: `https://api.openweathermap.org/data/2.5/weather?appid=77672c68786de792de20e4e44617bd62&q=Boston`,
-                method: "GET"
-            })
-                .then(updateCurrentWeather);
+            qurl = "https://api.openweathermap.org/data/2.5/weather?appid=77672c68786de792de20e4e44617bd62&q=Boston";
+        } else {
+            qurl = `https://api.openweathermap.org/data/2.5/weather?appid=77672c68786de792de20e4e44617bd62&q=${pastCity}`;
         }
+        $.ajax({
+            url: qurl,
+            method: "GET"
+        })
+            .then(updateCurrentWeather);
     });
 });
