@@ -1,9 +1,13 @@
-# 06-weather-dashboard
+# Weather Dashboard
 
 ## Description
-A weather dashboard which uses the [OpenWeather API](https://openweathermap.org/api), runs in the browser, and features dynamically updated HTML and CSS powered by jQuery. The page leverages Moment.js library for dates and Bootstrap for responsive HTML design. The page will load "Boston" as the default city if there is no previous search history.
+A weather dashboard in which a user can enter a city and receive the current weather and a 5-day forecast. Powered by the [OpenWeather API](https://openweathermap.org/api) API. The page will load "Boston" as the default city if there is no previous search history.
 
-The weather app can be accessed here: https://hilbug.github.io/06-weather-dashboard/
+Deployed app: https://hilbug.github.io/06-weather-dashboard/
+
+Technologies used are: HTML, CSS, Javascript, jQuery, Moment.js, Open Weather API
+
+Contact: hil.ferraro@gmail.com
 
 ## User Story
 
