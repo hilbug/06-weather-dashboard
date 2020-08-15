@@ -1,5 +1,7 @@
 # Weather Dashboard
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+
 ## Description
 A weather dashboard in which a user can enter a city and receive the current weather and a 5-day forecast. Powered by the [OpenWeather API](https://openweathermap.org/api) API. The page will load "Boston" as the default city if there is no previous search history.
 
